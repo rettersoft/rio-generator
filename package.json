@@ -1,7 +1,7 @@
 {
-  "name": "@retter/rdk",
-  "version": "1.0.7",
-  "description": "Retter development kit",
+  "name": "@retter/rio-generator",
+  "version": "1.0.0",
+  "description": "retter io proxy class helper generator",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
