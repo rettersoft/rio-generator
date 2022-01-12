@@ -1,0 +1,29 @@
+{
+  "name": "@retter/rdk",
+  "version": "1.0.7",
+  "description": "Retter development kit",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc -b",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rettersoft/rdk.git"
+  },
+  "author": "Retter",
+  "license": "ISC",
+  "dependencies": {
+    "json-schema-to-typescript": "10.1.5",
+    "yaml": "1.10.2"
+  },
+  "devDependencies": {
+    "@types/jest": "27.4.0",
+    "@types/node": "17.0.7",
+    "jest": "27.4.7",
+    "ts-jest": "27.1.2",
+    "typescript": "4.1.3"
+  }
+}
