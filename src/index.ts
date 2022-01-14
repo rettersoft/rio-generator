@@ -16,13 +16,12 @@ export async function generator(params: { classes: { [key: string]: string }, mo
 
 import RDK, { KeyValueString, GetInstance, CloudObjectResponse } from '@retter/rdk'
 
-interface RetterRequest<T> extends GetInstance {
-    classId?: string
-    body: T
+interface RetterRequest<T> extends Omit<GetInstance, 'classId'|'body'> {
+    body?: T
 }
 
 interface RetterResponse<T> extends CloudObjectResponse {
-    body: T
+    body?: T
 }
 
 ${ts}
@@ -41,7 +40,7 @@ ${blocks.reduce((f, i) => {
 }
 
 function capitalizeFirstLetter(str?: string) {
-    if (!str) return 'any'
+    if (!str || 'any') return 'any'
     return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
