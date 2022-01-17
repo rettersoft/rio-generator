@@ -66,8 +66,8 @@ public async ${methodName}(body: ${capitalizeFirstLetter(method.inputModel)}, op
     return `
 export class ${classId} {
     private readonly rdk: RDK
-    private readonly instanceId?: string
     private readonly lookupKey?: { name: string; value: string }
+    public readonly instanceId?: string
 
     public constructor(instanceId: string);
     public constructor(name: string, value: string);
