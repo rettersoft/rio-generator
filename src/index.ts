@@ -80,13 +80,14 @@ export class ${classId} {
         else this.instanceId = args[0]
     }
 
-    public static async getInstance(options?: RetterRequest<${capitalizeFirstLetter(getInstanceInputType)}>): Promise<${classId}> {
+    public static async getInstance(options?: RetterRequest<${capitalizeFirstLetter(getInstanceInputType)}>): Promise<${classId} | Error> {
         const rdk = new RDK()
         const result = await rdk.getInstance({
             ...options,
             classId: '${classId}',
         })
-        return new ${classId}(result.body.instanceId)
+        if (200 <= result.statusCode && result.statusCode < 300) return new ${classId}(result.body.instanceId)
+        else return new Error(result.body?.message || 'failed')
     }
 
     ${ methods.join('\n\n') }
