@@ -40,7 +40,7 @@ ${blocks.reduce((f, i) => {
 }
 
 function capitalizeFirstLetter(str?: string) {
-    if (!str || 'any') return 'any'
+    if (!str || str === 'any') return 'any'
     return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
