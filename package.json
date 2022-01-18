@@ -1,6 +1,6 @@
 {
   "name": "@retter/rio-generator",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "retter io proxy class helper generator",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
