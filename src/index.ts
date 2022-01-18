@@ -1,14 +1,30 @@
 import YAML from 'yaml'
-import { compile } from 'json-schema-to-typescript'
+import { quicktype, InputData, TypeScriptTargetLanguage, JSONSchemaInput, FetchingJSONSchemaStore } from 'quicktype-core'
 
-export async function generator(params: { classes: { [key: string]: string }, models: { [key: string]: any } }) {
-    const { classes, models } = params
-    const jsonSchema = JSON.parse(JSON.stringify({ $defs: { ...models } }))
-    const ts = await compile(jsonSchema as any, 'ProjectSchema', {
-        enableConstEnums: true,
-        unreachableDefinitions: true,
-        strictIndexSignatures: false
+async function quicktypeJSONSchema(typeName: string, jsonSchemaString: string) {
+    const schemaInput = new JSONSchemaInput(new FetchingJSONSchemaStore())
+
+    // We could add multiple schemas for multiple types,
+    // but here we're just making one type from JSON schema.
+    await schemaInput.addSource({ name: typeName, schema: jsonSchemaString })
+
+    const inputData = new InputData()
+    inputData.addInput(schemaInput)
+
+    const ts = new TypeScriptTargetLanguage()
+    const index = ts.optionDefinitions.findIndex(i => i.name === 'just-types')
+    ts.optionDefinitions[index].defaultValue = true
+    return await quicktype({
+        inputData,
+        lang: ts,
+        allPropertiesOptional: false
     })
+}
+
+export async function generator(params: { classes: { [key: string]: string }; models: { [key: string]: any } }) {
+    const { classes, models } = params
+    const { lines } = await quicktypeJSONSchema('RioModels', JSON.stringify({ properties: { ...models }, $defs: { ...models } }))
+    const ts = lines.join('\n') + '\n\n'
 
     const blocks: any[] = Object.keys(classes).map((classId) => renderClass(classId, classes[classId]))
     return `
@@ -24,7 +40,7 @@ interface RetterResponse<T> extends CloudObjectResponse {
     body?: T
 }
 
-${ts}
+${ts.trim()}
 
 export interface RDKOptions {
     httpMethod?: string
@@ -33,7 +49,7 @@ export interface RDKOptions {
 }
 
 ${blocks.reduce((f, i) => {
-    f = f + '\n\n' + i;
+    f = f + '\n\n' + i
     return f.trim()
 }, '')}
     `.trim()
@@ -50,14 +66,17 @@ function renderClass(classId: string, template: any) {
     for (const method of template.methods) {
         const methodName = method.method
         const description = method.description || 'calls ' + methodName + ' on ' + classId
-        methods.push(`
+        methods.push(
+            `
 /**
  * ${description}
  * @param {${capitalizeFirstLetter(method.inputModel)}} body - payload
  * @param {RDKOptions} options - other method call parameters
  * @returns {Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}>>}
  */
-public async ${methodName}(body: ${capitalizeFirstLetter(method.inputModel)}, options?: RDKOptions): Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}>> {
+public async ${methodName}(body: ${capitalizeFirstLetter(method.inputModel)}, options?: RDKOptions): Promise<RetterResponse<${capitalizeFirstLetter(
+                method.outputModel,
+            )}>> {
     return await this.rdk.methodCall({
         ...options,
         classId: '${classId}',
@@ -67,7 +86,8 @@ public async ${methodName}(body: ${capitalizeFirstLetter(method.inputModel)}, op
         body,
     })
 }
-        `.trim())
+        `.trim(),
+        )
     }
     const getInstanceInputType = template.init && typeof template.init !== 'string' ? template.init.inputModel : 'any'
     return `
@@ -114,7 +134,7 @@ export class ${classId} {
         else return new Error(result.body?.message || 'failed')
     }
 
-    ${ methods.join('\n\n') }
+    ${methods.join('\n\n')}
 }
         `.trim()
 }
