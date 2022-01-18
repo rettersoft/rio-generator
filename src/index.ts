@@ -49,9 +49,16 @@ function renderClass(classId: string, template: any) {
     const methods: string[] = []
     for (const method of template.methods) {
         const methodName = method.method
+        const description = method.description || 'calls ' + methodName + ' on ' + classId
         methods.push(`
+/**
+ * ${description}
+ * @param {${capitalizeFirstLetter(method.inputModel)}} body - payload
+ * @param {RDKOptions} options - other method call parameters
+ * @return {Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}>>}
+ */
 public async ${methodName}(body: ${capitalizeFirstLetter(method.inputModel)}, options?: RDKOptions): Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}>> {
-    return await this.rdk.methodCall({
+    returns await this.rdk.methodCall({
         ...options,
         classId: '${classId}',
         instanceId: this.instanceId,
@@ -64,12 +71,24 @@ public async ${methodName}(body: ${capitalizeFirstLetter(method.inputModel)}, op
     }
     const getInstanceInputType = template.init && typeof template.init !== 'string' ? template.init.inputModel : 'any'
     return `
+/** ${template.description || classId + ' Class'} */
 export class ${classId} {
     private readonly rdk: RDK
     private readonly lookupKey?: { name: string; value: string }
     public readonly instanceId?: string
 
+    /**
+     * use this constructor if you know the instance id.
+     * @param {string} instanceId - instance id
+     * @returns {${classId}}
+     */
     public constructor(instanceId: string);
+    /**
+     * use this constructor if you know only the look up key.
+     * @param {string} name - look up key name
+     * @param {string} value - look up key value
+     * @returns {${classId}}
+     */
     public constructor(name: string, value: string);
     public constructor(...args: string[]) {
         this.rdk = new RDK()
@@ -80,6 +99,11 @@ export class ${classId} {
         else this.instanceId = args[0]
     }
 
+    /**
+     * Gets a cloud object instance or creates new one
+     * @param {RetterRequest<${capitalizeFirstLetter(getInstanceInputType)}>} options - instance options
+     * @returns {Promise<${classId} | Error>}
+     */
     public static async getInstance(options?: RetterRequest<${capitalizeFirstLetter(getInstanceInputType)}>): Promise<${classId} | Error> {
         const rdk = new RDK()
         const result = await rdk.getInstance({
