@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo 1",
     "build": "tsc -b",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "patch-release": "npm version patch && npm run build && npm publish --access public"
   },
   "repository": {
     "type": "git",

@@ -55,10 +55,10 @@ function renderClass(classId: string, template: any) {
  * ${description}
  * @param {${capitalizeFirstLetter(method.inputModel)}} body - payload
  * @param {RDKOptions} options - other method call parameters
- * @return {Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}>>}
+ * @returns {Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}>>}
  */
 public async ${methodName}(body: ${capitalizeFirstLetter(method.inputModel)}, options?: RDKOptions): Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}>> {
-    returns await this.rdk.methodCall({
+    return await this.rdk.methodCall({
         ...options,
         classId: '${classId}',
         instanceId: this.instanceId,
