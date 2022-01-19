@@ -48,11 +48,12 @@ export interface RDKOptions {
     headers?: KeyValueString
 }
 
+export namespace Classes {
 ${blocks.reduce((f, i) => {
     f = f + '\n\n' + i
     return f.trim()
 }, '')}
-    `.trim()
+}`
 }
 
 function capitalizeFirstLetter(str?: string) {
