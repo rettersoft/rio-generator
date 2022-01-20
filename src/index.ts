@@ -123,16 +123,17 @@ export class ${classId} {
     /**
      * Gets a cloud object instance or creates new one
      * @param {RetterRequest<${capitalizeFirstLetter(getInstanceInputType)}>} options - instance options
-     * @returns {Promise<${classId} | Error>}
+     * @returns {Promise<${classId}>}
      */
-    public static async getInstance(options?: RetterRequest<${capitalizeFirstLetter(getInstanceInputType)}>): Promise<${classId} | Error> {
+    public static async getInstance(options?: RetterRequest<${capitalizeFirstLetter(getInstanceInputType)}>): Promise<${classId}> {
         const rdk = new RDK()
         const result = await rdk.getInstance({
             ...options,
             classId: '${classId}',
         })
         if (200 <= result.statusCode && result.statusCode < 300) return new ${classId}(result.body.instanceId)
-        else return new Error(result.body?.message || 'failed')
+
+        throw new Error(result.body?.message || 'failed')
     }
 
     ${methods.join('\n\n')}
