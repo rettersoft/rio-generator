@@ -26,11 +26,6 @@ export async function generator(params: { classes: { [key: string]: string }; mo
     const { lines } = await quicktypeJSONSchema('RioModels', JSON.stringify({ properties: { ...models }, $defs: { ...models } }))
     const ts = lines.join('\n') + '\n\n'
 
-    const schemas = Object.keys(models).reduce((final: string[], modelName: string) => {
-        final.push(`"${modelName}": ${JSON.stringify(models[modelName])}`)
-        return final
-    }, [])
-
     const blocks: any[] = Object.keys(classes).map((classId) => renderClass(classId, classes[classId]))
     return `
 // This is an auto generated file!
@@ -58,10 +53,6 @@ export namespace Classes {
         f = f + '\n\n' + i
         return f.trim()
     }, '')}
-}
-
-export const Schemas = {
-    ${schemas.join(',\n')}
 }
 `
 }
