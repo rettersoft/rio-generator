@@ -75,9 +75,7 @@ function renderClass(classId: string, template: any) {
  * @param {RDKOptions} options - other method call parameters
  * @returns {Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}>>}
  */
-public async ${methodName}(body: ${capitalizeFirstLetter(method.inputModel)}, options?: RDKOptions): Promise<RetterResponse<${capitalizeFirstLetter(
-                method.outputModel,
-            )}>> {
+public async ${methodName}(body: ${capitalizeFirstLetter(method.inputModel)}, options?: RDKOptions): Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}> | undefined> {
     return await this.rdk.methodCall({
         ...options,
         classId: '${classId}',
@@ -131,9 +129,9 @@ export class ${classId} {
             ...options,
             classId: '${classId}',
         })
-        if (200 <= result.statusCode && result.statusCode < 300) return new ${classId}(result.body.instanceId)
+        if (result && 200 <= result.statusCode && result.statusCode < 300) return new ${classId}(result.body.instanceId)
 
-        throw new Error(result.body?.message || 'failed')
+        throw new Error(result?.body?.message || 'failed')
     }
 
     ${methods.join('\n\n')}
