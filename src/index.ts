@@ -77,7 +77,7 @@ function renderClass(classId: string, template: any) {
  * @returns {Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}>>}
  */
 public async ${methodName}(body: ${capitalizeFirstLetter(method.inputModel)}, options?: RDKOptions): Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}> | undefined> {
-    return await this.rdk.methodCall({
+    return await this._rdk.methodCall({
         ...options,
         classId: '${classId}',
         instanceId: this.instanceId,
@@ -93,7 +93,7 @@ public async ${methodName}(body: ${capitalizeFirstLetter(method.inputModel)}, op
     return `
 /** ${template.description || classId + ' Class'} */
 export class ${classId} {
-    private readonly rdk: RDK
+    private readonly _rdk: RDK
     private readonly lookupKey?: { name: string; value: string }
     public readonly instanceId?: string
 
@@ -111,13 +111,15 @@ export class ${classId} {
      */
     public constructor(name: string, value: string);
     public constructor(...args: string[]) {
-        this.rdk = new RDK()
+        this._rdk = new RDK()
         if (args.length === 0 || args.length > 2) {
             throw new Error('Invalid number of arguments.');
         }
         if (args.length === 2) this.lookupKey = { name: args[0], value: args[1] }
         else this.instanceId = args[0]
     }
+
+    get rdk() { return this._rdk }
 
     /**
      * Gets a cloud object instance or creates new one
