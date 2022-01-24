@@ -96,6 +96,7 @@ export class ${classId} {
     private readonly _rdk: RDK
     private readonly lookupKey?: { name: string; value: string }
     public readonly instanceId?: string
+    public isNewInstance?: boolean
 
     /**
      * use this constructor if you know the instance id.
@@ -111,6 +112,7 @@ export class ${classId} {
      */
     public constructor(name: string, value: string);
     public constructor(...args: string[]) {
+        this.isNewInstance = false
         this._rdk = new RDK()
         if (args.length === 0 || args.length > 2) {
             throw new Error('Invalid number of arguments.');
@@ -132,7 +134,11 @@ export class ${classId} {
             ...options,
             classId: '${classId}',
         })
-        if (result && 200 <= result.statusCode && result.statusCode < 300) return new ${classId}(result.body.instanceId)
+        if (result && 200 <= result.statusCode && result.statusCode < 300) {
+            const _instance = new ${classId}(result.body.instanceId)
+            _instance.isNewInstance = !!result.body.newInstance
+            return _instance
+        }
 
         throw new Error(result?.body?.message || 'failed')
     }
