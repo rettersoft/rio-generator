@@ -277,16 +277,20 @@ __ReplaceEncodable__
 ${interfaces.trim()}
 
 struct RioClasses {
-    ${blocks.reduce((f, i) => {
-        f = f + '\n\n' + i
-        return f.trim()
-    }, '')}
+    __ReplaceMethods__
 }
     `
-            .replace(/: Equatable {/gi, ': Codable {')
-            .replace(/enum RioModels: Codable {/gi, 'enum RioModels {')
-            .replace(/Any/gi, 'AnyCodable')
-            .replace(/__ReplaceEncodable__/gi, encodable)
+            .replace(/: Equatable {/g, ': Codable {')
+            .replace(/enum RioModels: Codable {/g, 'enum RioModels {')
+            .replace(/Any/g, 'AnyCodable') // TODO! apply all combinations
+            .replace(/__ReplaceEncodable__/g, encodable)
+            .replace(
+                /__ReplaceMethods/,
+                blocks.reduce((f, i) => {
+                    f = f + '\n\n' + i
+                    return f.trim()
+                }, ''),
+            )
             .trim() +
         '\n\n' +
         anyCodable

@@ -3,17 +3,14 @@ import { renderTypescript } from './languages/typescript'
 import { renderKotlin } from './languages/kotlin'
 import { renderSwift } from './languages/swift'
 
-// TODO! server: typescript / javascript
-// TODO! client: typescript / javascript / swift / kotlin
-
 export async function generator(params: { classes: Classes; models: Models }, language: SupportedProgrammingLanguage = 'typescript'): Promise<string> {
     const { classes, models } = params
     const { lines } = await quickTypeJSONSchema('RioModels', JSON.stringify({ properties: { ...models }, $defs: { ...models } }), language)
     const interfaces = lines.join('\n')
     switch (language) {
-        case 'kotlin':
+        case 'kotlin-client':
             return renderKotlin(classes, interfaces)
-        case 'swift':
+        case 'swift-client':
             return renderSwift(classes, interfaces)
         case 'typescript':
         default:

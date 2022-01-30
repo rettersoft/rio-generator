@@ -6,7 +6,7 @@ import { SwiftTargetLanguage } from 'quicktype-core'
 import { TargetLanguage } from 'quicktype-core'
 import { TypeScriptTargetLanguage } from 'quicktype-core'
 
-export type SupportedProgrammingLanguage = 'typescript' | 'swift' | 'kotlin'
+export type SupportedProgrammingLanguage = 'typescript' | 'swift-client' | 'kotlin-client'
 export type Classes = { [key: string]: string }
 export type Models = { [key: string]: any }
 
@@ -26,10 +26,10 @@ export async function quickTypeJSONSchema(typeName: string, jsonSchemaString: st
     let targetLanguage: TargetLanguage
 
     switch (language) {
-        case 'kotlin':
+        case 'kotlin-client':
             targetLanguage = new KotlinTargetLanguage()
             break;
-        case 'swift':
+        case 'swift-client':
             targetLanguage = new SwiftTargetLanguage()
             break;
         case 'typescript':
