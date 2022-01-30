@@ -219,9 +219,9 @@ if let body = resp.body {
         methods.push(
             `
 func ${methodName}(input: ${inputInterface}, 
-                   options:RioCloudObjectOptions? = nil,
-                   onSuccess: @escaping (${outputInterface}?, RioCloudObjectResponse?) -> Void,
-                   onError: @escaping (RioCloudObjectError) -> Void) {
+                    options:RioCloudObjectOptions? = nil,
+                    onSuccess: @escaping (${outputInterface}?, RioCloudObjectResponse?) -> Void,
+                    onError: @escaping (RioCloudObjectError) -> Void) {
     var newOptions = options != nil ? options! : RioCloudObjectOptions()
     newOptions.classID = "${classId}"
     newOptions.method = "${methodName}"
@@ -236,7 +236,6 @@ func ${methodName}(input: ${inputInterface},
         `.trim(),
         )
     }
-    // const getInstanceInputType = template.init && typeof template.init !== 'string' ? template.init.inputModel : 'any'
     return `
 class ${classId} {
     let _obj:RioCloudObject
@@ -272,20 +271,20 @@ export function renderSwift(classes: Classes, interfaces: string) {
 
 import Rio
 
-__ReplaceEncodable__
+_-_-ReplaceEncodable-_-_
 
 ${interfaces.trim()}
 
 struct RioClasses {
-    __ReplaceMethods__
+    _-_-ReplaceMethods-_-_
 }
     `
             .replace(/: Equatable {/g, ': Codable {')
             .replace(/enum RioModels: Codable {/g, 'enum RioModels {')
             .replace(/Any/g, 'AnyCodable') // TODO! apply all combinations
-            .replace(/__ReplaceEncodable__/g, encodable)
+            .replace(/_-_-ReplaceEncodable-_-_/g, encodable)
             .replace(
-                /__ReplaceMethods/,
+                /_-_-ReplaceMethods-_-_/,
                 blocks.reduce((f, i) => {
                     f = f + '\n\n' + i
                     return f.trim()
