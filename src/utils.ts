@@ -38,12 +38,15 @@ export async function quickTypeJSONSchema(typeName: string, jsonSchemaString: st
             break;
     }
 
+    console.log(JSON.stringify(targetLanguage.optionDefinitions))
     let index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'just-types')
     if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = true
     index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'mutable-properties')
     if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = true
     index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'protocol')
     if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = 'equatable'
+    index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'framework')
+    if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = 'just-types'
     return await quicktype({
         inputData,
         lang: targetLanguage,

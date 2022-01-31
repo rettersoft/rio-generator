@@ -547,7 +547,7 @@ const generator = require('./dist/index').generator
                 },
             },
         },
-        'swift-client',
+        'kotlin-client',
     )
     console.log(code)
 })()
