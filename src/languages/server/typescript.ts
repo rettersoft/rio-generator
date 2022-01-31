@@ -1,5 +1,5 @@
 import YAML from 'yaml'
-import { capitalizeFirstLetter, Classes } from '../utils'
+import { capitalizeFirstLetter, Classes } from '../../utils'
 
 export function renderClass(classId: string, template: any) {
     template = YAML.parse(template)
@@ -15,7 +15,7 @@ export function renderClass(classId: string, template: any) {
  * @param {RDKOptions} options - other method call parameters
  * @returns {Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}>>}
  */
-public async ${methodName}(body: ${capitalizeFirstLetter(method.inputModel)}, options?: RDKOptions): Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}> | undefined> {
+public async ${methodName}(body?: ${capitalizeFirstLetter(method.inputModel)}, options?: RDKOptions): Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}> | undefined> {
     return await this._rdk.methodCall({
         ...options,
         classId: '${classId}',

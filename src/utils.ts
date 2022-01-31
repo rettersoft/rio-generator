@@ -6,7 +6,7 @@ import { SwiftTargetLanguage } from 'quicktype-core'
 import { TargetLanguage } from 'quicktype-core'
 import { TypeScriptTargetLanguage } from 'quicktype-core'
 
-export type SupportedProgrammingLanguage = 'typescript' | 'swift-client' | 'kotlin-client'
+export type SupportedProgrammingLanguage = 'typescript' | 'typescript-client' | 'swift-client' | 'kotlin-client'
 export type Classes = { [key: string]: string }
 export type Models = { [key: string]: any }
 

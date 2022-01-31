@@ -1,5 +1,5 @@
 import YAML from 'yaml'
-import { capitalizeFirstLetter, Classes } from '../utils'
+import { capitalizeFirstLetter, Classes } from '../../utils'
 
 const anyCodable = `
 public struct AnyCodable {
