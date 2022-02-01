@@ -38,7 +38,6 @@ export async function quickTypeJSONSchema(typeName: string, jsonSchemaString: st
             break;
     }
 
-    console.log(JSON.stringify(targetLanguage.optionDefinitions))
     let index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'just-types')
     if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = true
     index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'mutable-properties')
