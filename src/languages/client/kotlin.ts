@@ -70,7 +70,7 @@ import com.rettermobile.rio.cloud.RioGetCloudObjectOptions
 
 ${interfaces.trim()}
 
-namespace RioClasses {
+class RioClasses {
     ${blocks.reduce((f, i) => {
         f = f + '\n\n' + i
         return f.trim()
