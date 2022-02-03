@@ -76,5 +76,5 @@ class RioClasses {
         return f.trim()
     }, '')}
 }
-    `
+    `.replace(/ID/g, 'Id').replace('package quicktype', '')
 }
