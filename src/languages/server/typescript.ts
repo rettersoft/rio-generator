@@ -29,6 +29,9 @@ public async ${methodName}(body?: ${capitalizeFirstLetter(method.inputModel)}, o
         )
     }
     const getInstanceInputType = template.init && typeof template.init !== 'string' ? template.init.inputModel : 'any'
+    const getInstanceOutputTypeA = template.init && typeof template.init !== 'string' ? template.init.outputModel : undefined
+    const getInstanceOutputTypeB = template.get && typeof template.get !== 'string' ? template.get.outputModel : undefined
+    const getInstanceOutputType = getInstanceOutputTypeA || getInstanceOutputTypeB || 'any'
     return `
 /** ${template.description || classId + ' Class'} */
 export class ${classId} {
@@ -36,6 +39,7 @@ export class ${classId} {
     private readonly lookupKey?: { name: string; value: string }
     public readonly instanceId?: string
     public isNewInstance?: boolean
+    public _response?: ${getInstanceOutputType}
 
     /**
      * use this constructor if you know the instance id.
@@ -76,6 +80,7 @@ export class ${classId} {
         if (result && 200 <= result.statusCode && result.statusCode < 300) {
             const _instance = new ${classId}(result.body.instanceId)
             _instance.isNewInstance = !!result.body.newInstance
+            _instance._response = result.body.response
             return _instance
         }
 
