@@ -244,6 +244,12 @@ class ${classId} {
         self._obj = obj
     }
 
+    var state:RioCloudObject.State? {
+        get {
+            return self._obj.state
+        }
+    }
+
     static func getInstance(rio: Rio,
                             options:RioCloudObjectOptions? = nil,
                             onSuccess: @escaping (${classId}) -> Void,
@@ -281,7 +287,8 @@ struct RioClasses {
     `
             .replace(/: Equatable {/g, ': Codable {')
             .replace(/enum RioModels: Codable {/g, 'enum RioModels {')
-            .replace(/Any/g, 'AnyCodable') // TODO! apply all combinations
+            .replace(/Any/g, 'AnyCodable')
+            .replace(/ID/g, 'Id')
             .replace(/_-_-ReplaceEncodable-_-_/g, encodable)
             .replace(
                 /_-_-ReplaceMethods-_-_/,
