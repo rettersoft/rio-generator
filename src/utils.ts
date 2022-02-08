@@ -39,13 +39,19 @@ export async function quickTypeJSONSchema(typeName: string, jsonSchemaString: st
     }
 
     let index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'just-types')
-    if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = true
-    index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'mutable-properties')
-    if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = true
+    if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = false
+    // index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'mutable-properties')
+    // if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = true
     index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'protocol')
     if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = 'equatable'
     index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'framework')
     if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = 'just-types'
+    index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'initializers')
+    if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = false
+    index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'density')
+    if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = 'normal'
+    index = targetLanguage.optionDefinitions.findIndex(i => i.name === 'access-level')
+    if (index !== -1) targetLanguage.optionDefinitions[index].defaultValue = 'public'
     return await quicktype({
         inputData,
         lang: targetLanguage,

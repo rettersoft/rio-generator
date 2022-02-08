@@ -288,7 +288,7 @@ struct RioClasses {
             .replace(/: Equatable {/g, ': Codable {')
             .replace(/enum RioModels: Codable {/g, 'enum RioModels {')
             .replace(/Any/g, 'AnyCodable')
-            .replace(/ID/g, 'Id')
+            // .replace(/ID/g, 'Id')
             .replace(/_-_-ReplaceEncodable-_-_/g, encodable)
             .replace(
                 /_-_-ReplaceMethods-_-_/,
@@ -302,3 +302,13 @@ struct RioClasses {
         anyCodable
     )
 }
+
+/**
+    // TODO! swift template - baran
+    enum AuthStatus: String, Codable {
+        case authFailedInvalidOtp = 'AUTH_FAILED_INVALID_OTP'
+        case signupRequired = 'SIGNUP_REQUIRED'
+        case success = 'SUCCESS'
+        case tooManyAttempts = 'TOO_MANY_ATTEMPTS'
+    }
+*/
