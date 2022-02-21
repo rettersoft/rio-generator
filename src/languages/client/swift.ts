@@ -285,9 +285,10 @@ struct RioClasses {
     _-_-ReplaceMethods-_-_
 }
     `
-            .replace(/: Equatable {/g, ': Codable {')
-            .replace(/enum RioModels: Codable {/g, 'enum RioModels {')
-            .replace(/Any/g, 'AnyCodable')
+            // .replace(/: Equatable {/g, ': Codable {')
+            // .replace(/enum RioModels: Codable {/g, 'enum RioModels {')
+            // .replace(/Any/g, 'AnyCodable')
+            // .replace(/JSONAnyCodable/g, 'JSONAny')
             // .replace(/ID/g, 'Id')
             .replace(/_-_-ReplaceEncodable-_-_/g, encodable)
             .replace(
@@ -298,8 +299,8 @@ struct RioClasses {
                 }, ''),
             )
             .trim() +
-        '\n\n' +
-        anyCodable
+        '\n\n' + ''
+        // anyCodable
     )
 }
 
