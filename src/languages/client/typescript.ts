@@ -10,7 +10,7 @@ export function renderClass(classId: string, template: any) {
         const outputInterface = capitalizeFirstLetter(method.outputModel, 'any')
         methods.push(
             `
-    async ${methodName}(input?: ${inputInterface}, options?: RetterCloudObjectCall): Promise<${outputInterface}> {
+    async ${methodName}(input?: ${inputInterface}, options?: Omit<RetterCloudObjectCall, 'method' | 'body'>): Promise<${outputInterface}> {
         return this._obj.call({ ...options, method: "${methodName}", body: input }).then(r => r.data as ${outputInterface})
     }
         `.trim(),
@@ -24,7 +24,7 @@ export class ${classId} {
         this._obj = obj
     }
 
-    static async getInstance(rio: Retter, options?: RetterCloudObjectConfig): Promise<${classId}> {
+    static async getInstance(rio: Retter, options?: Omit<RetterCloudObjectConfig, 'classId'>): Promise<${classId}> {
         return new ${classId}(await rio.getCloudObject({ ...options, classId: '${classId}' }))
     }
 

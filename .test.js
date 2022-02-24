@@ -547,7 +547,7 @@ const generator = require('./dist/index').generator
                 },
             },
         },
-        'swift-client',
+        'typescript-client',
     )
     console.log(code)
 })()
