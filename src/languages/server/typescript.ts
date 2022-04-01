@@ -104,7 +104,7 @@ interface RetterRequest<T> extends Omit<GetInstance, 'classId'|'body'> {
 }
 
 interface RetterResponse<T> extends CloudObjectResponse {
-    body?: T
+    body: T
 }
 
 ${interfaces.trim()}
