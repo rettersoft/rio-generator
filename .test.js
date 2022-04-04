@@ -10,7 +10,7 @@ const generator = require('./dist/index').generator
                     'preAuthorizer: index.preAuthorizer\ninit: index.init\ngetState: index.getState\ngetInstanceId: index.getInstanceId\nmethods:\n\n    - method: getHome\n      tag: default\n      inputModel: GetHomepageInput\n      outputModel: GetHomepageOutput\n      sync: true\n      steps:\n          - id: default\n            handler: index.getHome\n    \n    - method: upsertHomeData\n      tag: default\n      inputModel: UpsertHomepageInput\n      sync: true\n      steps:\n          - id: default\n            handler: index.upsertHomeData\n',
                 MsisdnAuthenticator:
                     'preAuthorizer: index.preAuthorizer\ninit: \n  inputModel: GetMsisdnAuthInput\n  handler: index.init\ngetState: index.getState\ngetInstanceId: index.getInstanceId\nmethods:\n    - method: sendOtp\n      tag: otp\n      sync: true\n      steps:\n          - id: default\n            handler: index.sendOtp\n\n    - method: validateOtp\n      inputModel: ValidateOtpInput\n      outputModel: ValidateOtpOutput\n      tag: otp\n      sync: true\n      steps:\n          - id: default\n            handler: index.validateOtp\n\n    - method: signup\n      tag: signup\n      inputModel: SignUpInput\n      sync: true\n      steps:\n          - id: default\n            handler: index.signup\n',
-                Places: 'getInstanceId: index.getInstanceId\nmethods:\n  - method: getPlaces\n    sync: true\n    readonly: true\n    steps:\n        - id: default\n          handler: index.getPlaces\n',
+                Places: 'getInstanceId: index.getInstanceId\nmethods:\n  - method: getPlaces\n    sync: true\n    queryStringModel: Address\n    steps:\n        - id: default\n          handler: index.getPlaces\n',
                 Product:
                     'preAuthorizer: index.preAuthorizer\ninit: product.upsert\ngetState: index.getState\ngetInstanceId: index.getInstanceId\nmethods:\n  - method: get\n    tag: test\n    sync: true\n    readonly: true\n    steps:\n      - id: default\n        handler: product.getProduct\n  - method: update\n    tag: update\n    sync: true\n    steps:\n      - id: default\n        handler: product.upsert\n  - method: uploadImage\n    input: UploadImageInput\n    tag: test\n    sync: true\n    steps:\n      - id: default\n        handler: product.uploadImage\n    inputModel: UploadImageInput\n  - method: getImage\n    tag: test\n    sync: true\n    readonly: true\n    steps:\n      - id: default\n        handler: product.getImage\n',
                 ProductManager:
@@ -547,7 +547,7 @@ const generator = require('./dist/index').generator
                 },
             },
         },
-        'typescript-client',
+        'typescript',
     )
     console.log(code)
 })()

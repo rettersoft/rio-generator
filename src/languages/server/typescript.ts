@@ -7,6 +7,8 @@ export function renderClass(classId: string, template: any) {
     for (const method of template.methods) {
         const methodName = method.method
         const description = method.description || 'calls ' + methodName + ' on ' + classId
+        let queryStringModel = capitalizeFirstLetter(method.queryStringModel)
+        queryStringModel = queryStringModel !== 'any' ? `<${queryStringModel}>` : ''
         methods.push(
             `
 /**
@@ -15,7 +17,7 @@ export function renderClass(classId: string, template: any) {
  * @param {RDKOptions} options - other method call parameters
  * @returns {Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}>>}
  */
-public async ${methodName}(body?: ${capitalizeFirstLetter(method.inputModel)}, options?: RDKOptions): Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}> | undefined> {
+public async ${methodName}(body?: ${capitalizeFirstLetter(method.inputModel)}, options?: RDKOptions${queryStringModel}): Promise<RetterResponse<${capitalizeFirstLetter(method.outputModel)}> | undefined> {
     return await this._rdk.methodCall({
         ...options,
         classId: '${classId}',
@@ -109,9 +111,9 @@ interface RetterResponse<T> extends CloudObjectResponse {
 
 ${interfaces.trim()}
 
-export interface RDKOptions {
+export interface RDKOptions<T = KeyValueString> {
     httpMethod?: string
-    queryStringParams?: KeyValueString
+    queryStringParams?: T
     headers?: KeyValueString
 }
 
