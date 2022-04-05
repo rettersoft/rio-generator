@@ -95,6 +95,12 @@ const generator = require('./dist/index').generator
                     ],
                     type: 'object',
                 },
+                Addresses: {
+                    type: 'array',
+                    items: {
+                        $ref: '#/$defs/Address',
+                    },
+                },
                 AttributeInput: {
                     type: 'object',
                     properties: {

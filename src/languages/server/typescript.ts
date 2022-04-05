@@ -94,7 +94,7 @@ export class ${classId} {
         `.trim()
 }
 
-export function renderTypescript(classes: Classes, interfaces: string) {
+export function renderTypescript(classes: Classes, interfaces: string, arrayModels: string) {
     const blocks: any[] = Object.keys(classes).map((classId) => renderClass(classId, classes[classId]))
     return `
 // This is an auto generated file!
@@ -110,6 +110,8 @@ interface RetterResponse<T> extends CloudObjectResponse {
 }
 
 ${interfaces.trim()}
+
+${arrayModels.trim()}
 
 export interface RDKOptions<T = KeyValueString> {
     httpMethod?: string

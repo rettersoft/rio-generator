@@ -7,6 +7,8 @@ import { renderTypescript as renderTypescriptClient } from './languages/client/t
 export async function generator(params: { classes: Classes; models: Models }, language: SupportedProgrammingLanguage = 'typescript'): Promise<string> {
     const { classes, models } = params
     const { lines } = await quickTypeJSONSchema('RioModels', JSON.stringify({ properties: { ...models }, $defs: { ...models } }), language)
+    const arrayModels = Object.keys(models).filter((m: string) => models[m].type === 'array' && models[m].items.$ref)
+        .map((m: string) => `export interface ${m} extends Array<${models[m].items.$ref.split('/').pop()!}>{}`).join('\n')
     const interfaces = lines.join('\n')
     switch (language) {
         case 'kotlin-client':
@@ -14,9 +16,9 @@ export async function generator(params: { classes: Classes; models: Models }, la
         case 'swift-client':
             return renderSwift(classes, interfaces)
         case 'typescript-client':
-            return renderTypescriptClient(classes, interfaces)
+            return renderTypescriptClient(classes, interfaces, arrayModels)
         case 'typescript':
         default:
-            return renderTypescript(classes, interfaces)
+            return renderTypescript(classes, interfaces, arrayModels)
     }
 }

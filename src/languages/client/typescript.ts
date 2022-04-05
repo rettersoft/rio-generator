@@ -33,7 +33,7 @@ export class ${classId} {
         `.trim()
 }
 
-export function renderTypescript(classes: Classes, interfaces: string) {
+export function renderTypescript(classes: Classes, interfaces: string, arrayModels: string) {
     const blocks: any[] = Object.keys(classes).map((classId) => renderClass(classId, classes[classId]))
     return `
 // This is an auto generated file!
@@ -41,6 +41,8 @@ export function renderTypescript(classes: Classes, interfaces: string) {
 import Retter, { RetterCloudObject, RetterCloudObjectCall, RetterCloudObjectConfig } from '@retter/sdk'
 
 ${interfaces.trim()}
+
+${arrayModels.trim()}
 
 export namespace RioClasses {
     ${blocks.reduce((f, i) => {
