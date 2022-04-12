@@ -26,7 +26,7 @@ export class ${classId} {
 
     static async getInstance(rio: Retter, options?: Omit<RetterCloudObjectConfig, 'classId'>): Promise<${classId}> {
         const params = { ...options, classId: '${classId}' }
-        if (params.instanceId) params['useLocal'] = true
+        if (params.instanceId && params['useLocal'] !== false) params['useLocal'] = true
         return new ${classId}(await rio.getCloudObject(params))
     }
 
