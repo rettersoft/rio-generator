@@ -86,7 +86,7 @@ export class ${classId} {
             return _instance
         }
 
-        throw new Error(result?.body?.message || 'failed')
+        throw new Error(result?.body?.message || (typeof result?.body?.error === 'string' ? result?.body?.error : undefined) ||  'failed')
     }
 
     ${methods.join('\n\n')}
