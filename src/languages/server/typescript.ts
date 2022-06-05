@@ -144,7 +144,7 @@ export namespace Classes {
     }, '')}
 }
 
-export namespace Assets {
+export namespace RioAssets {
     ${renderAssets(classes)}
 }
 `
