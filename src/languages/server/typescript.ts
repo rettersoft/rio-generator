@@ -94,6 +94,24 @@ export class ${classId} {
         `.trim()
 }
 
+export function camelToUnderscore(key: string) {
+    var result = key.replace( /([A-Z])/g, " $1" );
+    return result.split(' ').join('_').toUpperCase();
+}
+
+export function renderAssets(classes: Classes) {
+    let assets: string[] = []
+    for (const classId of Object.keys(classes)) {
+        let asset = `export enum ${classId} {\n`
+        const template = YAML.parse(classes[classId])
+        for (const method of template.methods)
+            asset += `    ${camelToUnderscore(method.method)} = '${method.method}',\n`
+        asset += '}'
+        assets.push(asset)
+    }
+    return assets.join('\n\n')
+}
+
 export function renderTypescript(classes: Classes, interfaces: string, arrayModels: string) {
     const blocks: any[] = Object.keys(classes).map((classId) => renderClass(classId, classes[classId]))
     return `
@@ -124,6 +142,10 @@ export namespace Classes {
         f = f + '\n\n' + i
         return f.trim()
     }, '')}
+}
+
+export namespace Assets {
+    ${renderAssets(classes)}
 }
 `
 }
